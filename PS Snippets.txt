@@ -25,8 +25,8 @@ ForEach ($workstation in Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\wo
 foreach ($workstation in Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt") {if (!(Test-NetConnection -ComputerName $workstation -InformationLevel "quiet" -erroraction "silentlycontinue")) {out-file c:\public\workstations_down.txt}}
 ----------------------------------------------------------------------------------------------------------------------
 CHECK FOR FILE:
-Get–ChildItem –Path C:\ –Include *FileToLookFor* –File –Recurse –ErrorAction SilentlyContinue | Select–Object FullName
-Get–ChildItem –Path C:\ –Include *Taxes* –File –Recurse –ErrorAction SilentlyContinue | Select–Object FullName
+Getâ€“ChildItem â€“Path C:\ â€“Include *FileToLookFor* â€“File â€“Recurse â€“ErrorAction SilentlyContinue | Selectâ€“Object FullName
+Getâ€“ChildItem â€“Path C:\ â€“Include *Taxes* â€“File â€“Recurse â€“ErrorAction SilentlyContinue | Selectâ€“Object FullName
 ----------------------------------------------------------------------------------------------------------------------
 ROBOCOPY:
 robocopy /v /s /e /j /r:0 \\where_from \\where_to
@@ -43,7 +43,7 @@ shutdown with warning and 120 sec delay:
 shutdown /r /f /m \\C11MW-8TYMGB2 /t 300 /c "Warning: your computer will be rebooted in 5 minutes, Please save your work and exit. Thanks! -IT Shop"
 ----------------------------------------------------------------------------------------------------------------------
 FILE SEARCH:
-Get–ChildItem –Path C:\ –Include *FileToLookFor* –File –Recurse –ErrorAction SilentlyContinue | Select–Object FullName
+Getâ€“ChildItem â€“Path C:\ â€“Include *FileToLookFor* â€“File â€“Recurse â€“ErrorAction SilentlyContinue | Selectâ€“Object FullName
 
 Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt" | if (!(Test-NetConnection -ComputerName $workstation -InformationLevel Quiet -warningaction silentlycontinue)) {out-file workstations.txt}
 
@@ -59,8 +59,19 @@ foreach ($computer in Get-Content "workstation_list.txt") {Invoke-Command -Compu
 
 ----------------------------------------------------------------------------------------------------------------------
 REMOTE EXECUTION:
-try this first: Enable-PSRemoting –force
+try this first: Enable-PSRemoting â€“force
 INVOKE-COMMAND -computername "insert" -scriptblock {"insert"}
 INVOKE-COMMAND -computername C11MW-8V4RGB2 -scriptblock {hostname}
 something like that
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+1-155 convert to binary(base 2) output to file
+for ($i=1; $i -le 255; $i=$i+1) {$j=([Convert]::tostring($i,2)); add-content "binary_practice.txt" "$i $j"}
+base 16 modified
+for ($i=1; $i -le 100; $i=$i+1) {$j=([Convert]::tostring($i,16)); write-output "$i $j"}
+
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
