@@ -1,0 +1,66 @@
+LOOP:
+ForEach ($file in $files) {Run the command in this block}
+ForEach ($workstation in Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt") {ping -t $workstation} ##{Write-Host $workstation}
+ForEach ($workstation in Get-Content "workstation_list.txt"){ping -t $workstation}
+----------------------------------------------------------------------------------------------------------------------
+prompt user to Create a file then input numbered lines
+in .bat:
+@echo off
+Powershell.exe -executionpolicy bypass -File  U:\Desktop\New_chapter_cloud+_questions.ps1
+pause
+in .ps1:
+Set-Location "U:\Desktop"
+$a = read-host "Which Chapter are you on?" 
+new-item "Chapter /$a Cloud + questions.txt"
+for($i=1;$i -lt 100; $i++) {add-content "Chapter /$a Cloud + questions.txt" {$i + " "}}
+----------------------------------------------------------------------------------------------------------------------
+PING:
+ping -w 8000 -t 152.121.33.6
+##powershell.exe -executionpolicy bypass {}
+##pause
+ForEach ($workstation in Get-Content "workstation_list.txt") | ping -w 8000 -t $workstation
+ForEach ($workstation in Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt") {if (!(Test-NetConnection -ComputerName $workstation -InformationLevel Quiet)) {write-host $workstation " is down"}}
+ForEach ($workstation in Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt") {if (!(Test-NetConnection -ComputerName $workstation -InformationLevel Quiet)) {write-host $workstation " is down"}}
+ForEach ($workstation in Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt"){$workstation} | if(!(Test-NetConnection -ComputerName $workstation -InformationLevel quiet)) {out-file workstations_down.txt}
+foreach ($workstation in Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt") {if (!(Test-NetConnection -ComputerName $workstation -InformationLevel "quiet" -erroraction "silentlycontinue")) {out-file c:\public\workstations_down.txt}}
+----------------------------------------------------------------------------------------------------------------------
+CHECK FOR FILE:
+Get–ChildItem –Path C:\ –Include *FileToLookFor* –File –Recurse –ErrorAction SilentlyContinue | Select–Object FullName
+Get–ChildItem –Path C:\ –Include *Taxes* –File –Recurse –ErrorAction SilentlyContinue | Select–Object FullName
+----------------------------------------------------------------------------------------------------------------------
+ROBOCOPY:
+robocopy /v /s /e /j /r:0 \\where_from \\where_to
+robocopy /v /j /r:2 \\oscms-tis-fs101\Windows_10\Approved\10.5\SBU_Win10.5_Full C:\Public
+robocopy /v /s /e /j /r:2 C:\Public\Windows_10.5_Full \\c11mvs-munro\Public\Combat_Systems\IT\Systems\Windows_10\Windows_10.5_apr_2020
+----------------------------------------------------------------------------------------------------------------------
+copy-item:
+Copy-Item "\\oscms-tis-fs101\C3CEN_Firmware\CGECDIS\GSODYSSEYII(1NYZ1), COMPUTER, RACKMOUNT\SoftwareImage\ECDIS_ECSv2.0.0.1_Patch01.exe" -Destination "C:\Public"
+----------------------------------------------------------------------------------------------------------------------
+REBOOT:
+Instant Shutdown, no warning:
+shutdown /r /f /m \\C11MW-8V0PGB2 /t 0
+shutdown with warning and 120 sec delay:
+shutdown /r /f /m \\C11MW-8TYMGB2 /t 300 /c "Warning: your computer will be rebooted in 5 minutes, Please save your work and exit. Thanks! -IT Shop"
+----------------------------------------------------------------------------------------------------------------------
+FILE SEARCH:
+Get–ChildItem –Path C:\ –Include *FileToLookFor* –File –Recurse –ErrorAction SilentlyContinue | Select–Object FullName
+
+Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt" | if (!(Test-NetConnection -ComputerName $workstation -InformationLevel Quiet -warningaction silentlycontinue)) {out-file workstations.txt}
+
+$workstations = Get-Content "C:\Public\workstation_list.txt"
+$Result = foreach ($ComputerName in $workstations) {[PSCustomObject]@{ComputerName = $ComputerName Online = (Test-Connection -ComputerName $ComputerName -Count 1 -Quiet)}}
+$Result | Where-Object -Property 'Online' -EQ -Value $false |
+        Select-Object -ExpandProperty ComputerName |
+            Out-File -FilePath 'offline_workstation_list.txt'
+----------------------------------------------------------------------------------------------------------------------
+SET TIMEZONE:
+SET-TIMEZONE "Alaskan Standard Time" or "Pacific Standard Time"
+foreach ($computer in Get-Content "workstation_list.txt") {Invoke-Command -ComputerName $computer -ScriptBlock {tzutil.exe /s 'Alaskan Standard Time'}}
+
+----------------------------------------------------------------------------------------------------------------------
+REMOTE EXECUTION:
+try this first: Enable-PSRemoting –force
+INVOKE-COMMAND -computername "insert" -scriptblock {"insert"}
+INVOKE-COMMAND -computername C11MW-8V4RGB2 -scriptblock {hostname}
+something like that
+----------------------------------------------------------------------------------------------------------------------
