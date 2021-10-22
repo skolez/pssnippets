@@ -74,6 +74,11 @@ for ($i=1; $i -le 100; $i=$i+1) {$j=([Convert]::tostring($i,16)); write-output "
 BULK RENAME FILES
  Get-ChildItem -Filter "*FILE_NAME*" -Recurse | Rename-Item -NewName {$_.name -replace 'ORIGINAL','NEW' }
 ----------------------------------------------------------------------------------------------------------------------
+Compare-Object (Get-ChildItem -r $share1) (Get-ChildItem -r $share2) -IncludeEqual | findstr == | Out-File C:\out.file.txt
+
+$drive1 = Read-Host "Enter drive 1: "
+$drive2 = Read-Host "Enter drive 2: "
+Compare-Object (Get-ChildItem -r $drive1) (Get-ChildItem -r $drive2) -IncludeEqual | findstr == | Out-File C:\enter path here\out.file.txt
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
