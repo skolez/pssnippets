@@ -1,6 +1,6 @@
 LOOP:
 ForEach ($file in $files) {Run the command in this block}
-ForEach ($workstation in Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt") {ping -t $workstation} ##{Write-Host $workstation}
+ForEach ($workstation in Get-Content "\\serverName\Public\directory\IT\workstation_list.txt") {ping -t $workstation} ##{Write-Host $workstation}
 ForEach ($workstation in Get-Content "workstation_list.txt"){ping -t $workstation}
 ----------------------------------------------------------------------------------------------------------------------
 prompt user to Create a file then input numbered lines
@@ -19,10 +19,10 @@ ping -w 8000 -t 152.121.33.6
 ##powershell.exe -executionpolicy bypass {}
 ##pause
 ForEach ($workstation in Get-Content "workstation_list.txt") | ping -w 8000 -t $workstation
-ForEach ($workstation in Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt") {if (!(Test-NetConnection -ComputerName $workstation -InformationLevel Quiet)) {write-host $workstation " is down"}}
-ForEach ($workstation in Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt") {if (!(Test-NetConnection -ComputerName $workstation -InformationLevel Quiet)) {write-host $workstation " is down"}}
-ForEach ($workstation in Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt"){$workstation} | if(!(Test-NetConnection -ComputerName $workstation -InformationLevel quiet)) {out-file workstations_down.txt}
-foreach ($workstation in Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt") {if (!(Test-NetConnection -ComputerName $workstation -InformationLevel "quiet" -erroraction "silentlycontinue")) {out-file c:\public\workstations_down.txt}}
+ForEach ($workstation in Get-Content "\\serverName\Public\directory\IT\workstation_list.txt") {if (!(Test-NetConnection -ComputerName $workstation -InformationLevel Quiet)) {write-host $workstation " is down"}}
+ForEach ($workstation in Get-Content "\\serverName\Public\directory\IT\workstation_list.txt") {if (!(Test-NetConnection -ComputerName $workstation -InformationLevel Quiet)) {write-host $workstation " is down"}}
+ForEach ($workstation in Get-Content "\\serverName\Public\directory\IT\workstation_list.txt"){$workstation} | if(!(Test-NetConnection -ComputerName $workstation -InformationLevel quiet)) {out-file workstations_down.txt}
+foreach ($workstation in Get-Content "\\serverName\Public\directory\IT\workstation_list.txt") {if (!(Test-NetConnection -ComputerName $workstation -InformationLevel "quiet" -erroraction "silentlycontinue")) {out-file c:\public\workstations_down.txt}}
 ----------------------------------------------------------------------------------------------------------------------
 CHECK FOR FILE:
 Get–ChildItem –Path C:\ –Include *FileToLookFor* –File –Recurse –ErrorAction SilentlyContinue | Select–Object FullName
@@ -30,11 +30,11 @@ Get–ChildItem –Path C:\ –Include *Taxes* –File –Recurse –ErrorAction
 ----------------------------------------------------------------------------------------------------------------------
 ROBOCOPY:
 robocopy /v /s /e /j /r:0 \\where_from \\where_to
-robocopy /v /j /r:2 \\oscms-tis-fs101\Windows_10\Approved\10.5\SBU_Win10.5_Full C:\Public
-robocopy /v /s /e /j /r:2 C:\Public\Windows_10.5_Full \\c11mvs-munro\Public\Combat_Systems\IT\Systems\Windows_10\Windows_10.5_apr_2020
+robocopy /v /j /r:2 \\serverName\Windows_10\Approved\10.5\SBU_Win10.5_Full C:\Public
+robocopy /v /s /e /j /r:2 C:\Public\Windows_10.5_Full \\serverName\Public\directory\IT\
 ----------------------------------------------------------------------------------------------------------------------
 copy-item:
-Copy-Item "\\oscms-tis-fs101\C3CEN_Firmware\CGECDIS\GSODYSSEYII(1NYZ1), COMPUTER, RACKMOUNT\SoftwareImage\ECDIS_ECSv2.0.0.1_Patch01.exe" -Destination "C:\Public"
+Copy-Item "\\serverName\C3CEN_Firmware\CGECDIS\GSODYSSEYII(1NYZ1), COMPUTER, RACKMOUNT\SoftwareImage\ECDIS_ECSv2.0.0.1_Patch01.exe" -Destination "C:\Public"
 ----------------------------------------------------------------------------------------------------------------------
 REBOOT:
 Instant Shutdown, no warning:
@@ -45,7 +45,7 @@ shutdown /r /f /m \\C11MW-8TYMGB2 /t 300 /c "Warning: your computer will be rebo
 FILE SEARCH:
 Get–ChildItem –Path C:\ –Include *FileToLookFor* –File –Recurse –ErrorAction SilentlyContinue | Select–Object FullName
 
-Get-Content "\\C11MVS-MUNRO\Public\Combat_Systems\IT\workstation_list.txt" | if (!(Test-NetConnection -ComputerName $workstation -InformationLevel Quiet -warningaction silentlycontinue)) {out-file workstations.txt}
+Get-Content "\\serverName\Public\directory\IT\workstation_list.txt" | if (!(Test-NetConnection -ComputerName $workstation -InformationLevel Quiet -warningaction silentlycontinue)) {out-file workstations.txt}
 
 $workstations = Get-Content "C:\Public\workstation_list.txt"
 $Result = foreach ($ComputerName in $workstations) {[PSCustomObject]@{ComputerName = $ComputerName Online = (Test-Connection -ComputerName $ComputerName -Count 1 -Quiet)}}
@@ -61,7 +61,7 @@ foreach ($computer in Get-Content "workstation_list.txt") {Invoke-Command -Compu
 REMOTE EXECUTION:
 try this first: Enable-PSRemoting –force
 INVOKE-COMMAND -computername "insert" -scriptblock {"insert"}
-INVOKE-COMMAND -computername C11MW-8V4RGB2 -scriptblock {hostname}
+INVOKE-COMMAND -computername <computerName> -scriptblock {hostname}
 something like that
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------
